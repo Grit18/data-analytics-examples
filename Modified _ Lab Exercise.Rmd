@@ -1,0 +1,107 @@
+###I- Applying Computational Tools R
+
+#Question 1
+
+#(a & b)
+
+#Read and Skip First 6 Rows
+dataset_laucnty14 <- read.csv(file="~/Desktop/DATA200HW3/Canvas/Data/laucnty14.csv", skip = 6, header = F)
+
+dataset_laucnty15 <- read.csv("~/Desktop/DATA200HW3/Canvas/Data/laucnty15.csv", skip = 6, header = F)
+
+dataset_laucnty16 <- read.csv("~/Desktop/DATA200HW3/Canvas/Data/laucnty16.csv", skip = 6, header = F)
+
+dataset_laucnty17 <- read.csv("~/Desktop/DATA200HW3/Canvas/Data/laucnty17.csv", skip = 6, header = F)
+
+dataset_laucnty18 <- read.csv("~/Desktop/DATA200HW3/Canvas/Data/laucnty18.csv", skip = 6, header = F)
+
+#Set Column Names
+col_dataset_laucnty14 <- setNames(dataset_laucnty14, c("LAUS Code","State FIPS Code","County FIPS Code","County Name/State Abbreviation","Year", "","Labor Force","Employed","Unemployed","Unemployment Rate %"))
+
+col_dataset_laucnty15 <- setNames(dataset_laucnty15, c("LAUS Code","State FIPS Code","County FIPS Code","County Name/State Abbreviation","Year", "","Labor Force","Employed","Unemployed","Unemployment Rate %"))
+
+col_dataset_laucnty16 <- setNames(dataset_laucnty16, c("LAUS Code","State FIPS Code","County FIPS Code","County Name/State Abbreviation","Year", "","Labor Force","Employed","Unemployed","Unemployment Rate %"))
+
+col_dataset_laucnty17 <- setNames(dataset_laucnty17, c("LAUS Code","State FIPS Code","County FIPS Code","County Name/State Abbreviation","Year", "","Labor Force","Employed","Unemployed","Unemployment Rate %"))
+
+col_dataset_laucnty18 <- setNames(dataset_laucnty18, c("LAUS Code","State FIPS Code","County FIPS Code","County Name/State Abbreviation","Year", "","Labor Force","Employed","Unemployed","Unemployment Rate %"))
+
+#(c)
+
+#Filering Columns
+library(dplyr) 
+
+drop_dataset_laucnty14 <-select (col_dataset_laucnty14 ,-c("LAUS Code","County Name/State Abbreviation", "","Labor Force","Employed","Unemployed"))
+
+drop_dataset_laucnty15 <-select (col_dataset_laucnty15 ,-c("LAUS Code","County Name/State Abbreviation", "","Labor Force","Employed","Unemployed"))
+
+drop_dataset_laucnty16 <-select (col_dataset_laucnty16 ,-c("LAUS Code","County Name/State Abbreviation", "","Labor Force","Employed","Unemployed"))
+
+drop_dataset_laucnty17 <-select (col_dataset_laucnty17 ,-c("LAUS Code","County Name/State Abbreviation", "","Labor Force","Employed","Unemployed"))
+
+drop_dataset_laucnty18 <-select (col_dataset_laucnty18 ,-c("LAUS Code","County Name/State Abbreviation", "","Labor Force","Employed","Unemployed"))
+
+#(d)
+#Append 5 Years
+
+laucnty_14_18 <- bind_rows(drop_dataset_laucnty14,drop_dataset_laucnty15,drop_dataset_laucnty16,drop_dataset_laucnty17,drop_dataset_laucnty18)
+
+library(readr) 
+readr::write_csv(x = laucnty_14_18, path = "~/Desktop/DATA200HW3/Canvas/Data/laucnty_14_18.csv")
+
+#(e)
+#Summary Statistics Unemployement Rate By Year
+library(tidyverse)
+
+     
+```{r}
+laucnty_14_18  %>%  
+filter(
+  !is.na(Year)
+) %>% 
+  group_by(Year) %>% 
+  rename(
+    unemployment_rate_pct = `Unemployment Rate %`
+) %>% 
+  summarise(min = min(unemployment_rate_pct),
+         
+            median = median(unemployment_rate_pct),
+            
+            mean= mean(unemployment_rate_pct),
+            
+            sd = sd(unemployment_rate_pct),
+            
+            max = max(unemployment_rate_pct)    
+            
+            )
+
+```
+            
+
+#Question 2
+
+```{r}
+
+library(ggplot2)
+
+
+a <- ggplot(data=laucnty_14_18 , aes(x=unemployment_rate_pct, y=mean(unemployment_rate_pct), group=1)) +
+  geom_line()+
+  geom_point()
+a
+
+```
+
+
+library(ggplot2)
+library(tidyverse)
+
+laucnty_14_18  %>%  
+  rename(
+    unemployment_rate_pct = `Unemployment Rate %`
+) %>% 
+  
+a <- ggplot(data=laucnty_14_18 , aes(x=unemployment_rate_pct, y=mean(unemployment_rate_pct), group=1)) +
+  geom_line()+
+  geom_point()
+a
